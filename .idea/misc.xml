@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/APLICACIONES/NERDERY/ANDROID/MarsRealState/app/src/main/res/drawable/ic_baseline_signal_cellular_connected_no_internet_4_bar_24.xml" value="0.22777777777777777" />
         <entry key="..\:/APLICACIONES/NERDERY/ANDROID/MarsRealState/app/src/main/res/drawable/loading_animation.xml" value="0.22777777777777777" />
         <entry key="..\:/APLICACIONES/NERDERY/ANDROID/MarsRealState/app/src/main/res/drawable/loading_img.xml" value="0.22777777777777777" />
+        <entry key="..\:/APLICACIONES/NERDERY/ANDROID/MarsRealState/app/src/main/res/layout/fragment_overview.xml" value="0.1598731884057971" />
         <entry key="..\:/APLICACIONES/NERDERY/ANDROID/MarsRealState/app/src/main/res/layout/grid_view_item.xml" value="0.25" />
         <entry key="..\:/APLICACIONES/NERDERY/ANDROID/ULTIMO/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/APLICACIONES/NERDERY/ANDROID/ULTIMO/app/src/main/res/layout/fragment_detail.xml" value="0.1793478260869565" />

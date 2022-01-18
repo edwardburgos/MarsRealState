@@ -10,22 +10,26 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
+enum class MarsApiStatus { LOADING, ERROR, DONE }
 /**
  * The [ViewModel] that is attached to the [OverviewFragment].
  */
 class OverviewViewModel : ViewModel() {
 
     // The internal MutableLiveData String that stores the most recent status
-    private val _status = MutableLiveData<String>()
+    private val _status = MutableLiveData<MarsApiStatus>()
 
     // The external immutable LiveData for the status String
-    val status: LiveData<String>
+    val status: MutableLiveData<MarsApiStatus>
     get() = _status
 
-    private val _property = MutableLiveData<MarsProperty>()
-    val property: LiveData<MarsProperty>
-    get() = _property
+    private val _properties = MutableLiveData<List<MarsProperty>>()
+    val properties: LiveData<List<MarsProperty>>
+    get() = _properties
 
+    private val _navigateToSelectedProperty = MutableLiveData<MarsProperty>()
+    val navigateToSelectedProperty: LiveData<MarsProperty>
+    get() = _navigateToSelectedProperty
 
     // To use deferred instead of callback
     // With this we can easily update the value of our MutableLiveData when we get a result
@@ -45,8 +49,7 @@ class OverviewViewModel : ViewModel() {
      * This method calls Retrofit service to handle the response
      */
     private fun getMarsRealEstateProperties() {
-        // This is the default data
-        _status.value = "Loading data"
+
         // CON CALLBACK EN EL MÉTODO ENQUEUE
 //        // enqueue() start the network request on a background thread. Its parameter contains methods
 //        // that can be invoked when the request is completed
@@ -69,13 +72,14 @@ class OverviewViewModel : ViewModel() {
             // This is a coroutine scope
             var getPropertiesDeferred = MarsApi.retrofitService.getProperties()
             try {
+                _status.value = MarsApiStatus.LOADING
                 var listResult = getPropertiesDeferred.await()
-                // _status.value = "${listResult.size}"
+                _status.value = MarsApiStatus.DONE
                 if (listResult.size > 0) {
-                    _property.value = listResult[0]
+                    _properties.value = listResult
                 }
             } catch (t: Throwable) {
-                _status.value = "Failure: ${t.message}"
+                _status.value = MarsApiStatus.ERROR
             }
         }
     }
@@ -83,5 +87,13 @@ class OverviewViewModel : ViewModel() {
     override fun onCleared() {
         viewModelJob.cancel() // To cancel the job when the fragment is gone
         super.onCleared()
+    }
+
+    fun displayPropertyDetails(marsProperty: MarsProperty) {
+        _navigateToSelectedProperty.value = marsProperty
+    }
+
+    fun displayPropertyDetailsComplete() {
+        _navigateToSelectedProperty.value = null
     }
 }
