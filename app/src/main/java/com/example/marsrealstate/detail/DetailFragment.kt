@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.example.marsrealstate.R
 import com.example.marsrealstate.databinding.FragmentDetailBinding
@@ -30,8 +31,7 @@ class DetailFragment : Fragment() {
 
         val marsProperty = DetailFragmentArgs.fromBundle(requireArguments()).selectedProperty
         val viewModelFactory = DetailViewModelFactory(marsProperty, application)
-        binding.viewModel = ViewModelProviders
-            .of(this, viewModelFactory)
+        binding.viewModel = ViewModelProvider(this, viewModelFactory)
             .get(DetailViewModel::class.java)
         return binding.root
     }
