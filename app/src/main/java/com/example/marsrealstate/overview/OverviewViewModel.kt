@@ -7,25 +7,25 @@ import com.example.marsrealstate.network.MarsApi
 import com.example.marsrealstate.network.MarsProperty
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 /**
  * The [ViewModel] that is attached to the [OverviewFragment].
  */
 class OverviewViewModel : ViewModel() {
 
-    // The internal MutableLiveData String that stores the most recent response
-    private val _response = MutableLiveData<String>()
+    // The internal MutableLiveData String that stores the most recent status
+    private val _status = MutableLiveData<String>()
 
-    // The external immutable LiveData for the response String
-    val response: LiveData<String>
-        get() = _response
+    // The external immutable LiveData for the status String
+    val status: LiveData<String>
+    get() = _status
+
+    private val _property = MutableLiveData<MarsProperty>()
+    val property: LiveData<MarsProperty>
+    get() = _property
+
 
     // To use deferred instead of callback
     // With this we can easily update the value of our MutableLiveData when we get a result
@@ -46,7 +46,7 @@ class OverviewViewModel : ViewModel() {
      */
     private fun getMarsRealEstateProperties() {
         // This is the default data
-        _response.value = "Loading data"
+        _status.value = "Loading data"
         // CON CALLBACK EN EL MÉTODO ENQUEUE
 //        // enqueue() start the network request on a background thread. Its parameter contains methods
 //        // that can be invoked when the request is completed
@@ -55,12 +55,12 @@ class OverviewViewModel : ViewModel() {
 //                call: Call<List<MarsProperty>>,
 //                response: Response<List<MarsProperty>>
 //            ) {
-//                _response.value = "${response.body()?.size}"
+//                _status.value = "${status.body()?.size}"
 //
 //            }
 //
 //            override fun onFailure(call: Call<List<MarsProperty>>, t: Throwable) {
-//                _response.value = "Failure: ${t.message}"
+//                _status.value = "Failure: ${t.message}"
 //            }
 //        })
 
@@ -70,9 +70,12 @@ class OverviewViewModel : ViewModel() {
             var getPropertiesDeferred = MarsApi.retrofitService.getProperties()
             try {
                 var listResult = getPropertiesDeferred.await()
-                _response.value = "${listResult.size}"
+                // _status.value = "${listResult.size}"
+                if (listResult.size > 0) {
+                    _property.value = listResult[0]
+                }
             } catch (t: Throwable) {
-                _response.value = "Failure: ${t.message}"
+                _status.value = "Failure: ${t.message}"
             }
         }
     }

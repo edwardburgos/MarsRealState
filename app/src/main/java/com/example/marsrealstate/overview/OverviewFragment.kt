@@ -6,14 +6,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.marsrealstate.R
-import com.example.marsrealstate.databinding.FragmentOverviewBinding
+import com.example.marsrealstate.databinding.GridViewItemBinding
 
 /**
  * This fragment shows the the status of the Mars real-estate web services transaction.
  */
 class OverviewFragment : Fragment() {
 
-    lateinit var binding: FragmentOverviewBinding
+    lateinit var binding: GridViewItemBinding
     /**
      * Lazily initialize our [OverviewViewModel].
      */
@@ -27,8 +27,9 @@ class OverviewFragment : Fragment() {
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_overview, container, false)
-
+        //binding = DataBindingUtil.inflate(inflater, R.layout.grid_view_item, container, false)
+       binding = GridViewItemBinding.inflate(inflater)
+        ///binding = GridViewItemBinding.inflate(inflater, container, false)
         // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
         binding.lifecycleOwner = this
 
